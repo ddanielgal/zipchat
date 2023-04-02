@@ -1,0 +1,137 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Participant {
+  name           String     @id
+  Reactions      Reaction[]
+  Messages       Message[]
+  Chats          Chat[]
+  UserInMessages Message[]  @relation("MessageUser")
+}
+
+model Photo {
+  id                String  @id @default(cuid())
+  uri               String  @db.MediumText
+  creationTimestamp Int
+  Message           Message @relation(fields: [messageId], references: [id])
+  messageId         String
+}
+
+model Video {
+  id                String  @id @default(cuid())
+  uri               String  @db.MediumText
+  creationTimestamp Int
+  Message           Message @relation(fields: [messageId], references: [id])
+  messageId         String
+}
+
+model Gif {
+  id        String  @id @default(cuid())
+  uri       String  @db.MediumText
+  Message   Message @relation(fields: [messageId], references: [id])
+  messageId String
+}
+
+model File {
+  id                String  @id @default(cuid())
+  uri               String  @db.MediumText
+  creationTimestamp Int
+  Message           Message @relation(fields: [messageId], references: [id])
+  messageId         String
+}
+
+model AudioFile {
+  id                String  @id @default(cuid())
+  uri               String  @db.MediumText
+  creationTimestamp Int
+  Message           Message @relation(fields: [messageId], references: [id])
+  messageId         String
+}
+
+model Reaction {
+  id        String      @id @default(cuid())
+  reaction  String
+  actor     Participant @relation(fields: [actorName], references: [name])
+  actorName String
+  Message   Message     @relation(fields: [messageId], references: [id])
+  messageId String
+}
+
+model Share {
+  id        String  @id @default(cuid())
+  link      String? @db.MediumText
+  shareText String? @db.LongText
+  Message   Message @relation(fields: [messageId], references: [id])
+  messageId String  @unique
+}
+
+model Sticker {
+  id        String  @id @default(cuid())
+  uri       String  @db.MediumText
+  Message   Message @relation(fields: [messageId], references: [id])
+  messageId String  @unique
+}
+
+model Message {
+  id           String        @id @default(cuid())
+  sender       Participant   @relation(fields: [senderName], references: [name])
+  senderName   String
+  timestampMs  String
+  content      String?       @db.LongText
+  photos       Photo[]
+  videos       Video[]
+  gifs         Gif[]
+  files        File[]
+  audioFiles   AudioFile[]
+  reactions    Reaction[]
+  sticker      Sticker?
+  share        Share?
+  callDuration Int?
+  isUnsent     Boolean?
+  users        Participant[] @relation("MessageUser")
+  Chat         Chat          @relation(fields: [chatId], references: [id])
+  chatId       String
+
+  @@unique([senderName, timestampMs])
+}
+
+model MagicWord {
+  id     String @id @default(cuid())
+  word   String
+  Chat   Chat   @relation(fields: [chatId], references: [id])
+  chatId String
+}
+
+model JoinableMode {
+  id   String @id @default(cuid())
+  mode Int
+  link String
+  Chat Chat?
+}
+
+model Image {
+  id                String @id @default(cuid())
+  uri               String @db.MediumText
+  creationTimestamp Int
+  Chat              Chat?
+}
+
+model Chat {
+  id                 String        @id @default(cuid())
+  title              String
+  isStillParticipant Boolean
+  threadPath         String
+  messages           Message[]
+  participants       Participant[]
+  magicWords         MagicWord[]
+  joinableMode       JoinableMode  @relation(fields: [joinableModeId], references: [id])
+  joinableModeId     String        @unique
+  image              Image         @relation(fields: [imageId], references: [id])
+  imageId            String        @unique
+}
