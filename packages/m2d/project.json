@@ -1,0 +1,77 @@
+{
+  "name": "m2d",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/m2d/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/packages/m2d",
+        "format": ["cjs"],
+        "bundle": false,
+        "main": "packages/m2d/src/main.ts",
+        "tsConfig": "packages/m2d/tsconfig.app.json",
+        "assets": ["packages/m2d/src/assets"],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "m2d:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "m2d:build:development"
+        },
+        "production": {
+          "buildTarget": "m2d:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/m2d/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "packages/m2d/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": []
+}
