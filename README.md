@@ -8,9 +8,17 @@
 
 Run `nx graph` to see a diagram of the dependencies of the projects.
 
-## Remote caching
+## Setup
 
-Run `npx nx connect-to-nx-cloud` to enable [remote caching](https://nx.app) and make CI faster.
+```
+cp .env.template .env.local
+cp .env.prisma.template .env.prisma.stash
+cp .env.prisma.template .env.prisma.live
+```
+
+Stash stores every messages.
+
+Live stores only the selected messages.
 
 ## Further help
 

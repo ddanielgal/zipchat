@@ -1,0 +1,84 @@
+{
+  "name": "database",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/database/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/database/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "packages/database/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    },
+    "prisma-generate": {
+      "executor": "@nx-tools/nx-prisma:generate",
+      "options": {
+        "schema": "prisma/schema.prisma"
+      }
+    },
+    "prisma-push": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "packages/database",
+        "command": "prisma db push"
+      },
+      "configurations": {
+        "stash": {
+          "envFile": ".env.prisma.stash"
+        },
+        "live": {
+          "envFile": ".env.prisma.live"
+        }
+      }
+    },
+    "prisma-studio": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "packages/database",
+        "command": "prisma studio"
+      },
+      "configurations": {
+        "stash": {
+          "envFile": ".env.prisma.stash"
+        },
+        "live": {
+          "envFile": ".env.prisma.live"
+        }
+      }
+    },
+    "stash-create": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "podman run -d --name chat-db -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -e MYSQL_DATABASE=chat -p 3306:3306 -v chat:/var/lib/mysql docker.io/library/mysql:8"
+      }
+    },
+    "stash-start": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "podman start chat-db"
+      }
+    },
+    "stash-stop": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "podman stop chat-db"
+      }
+    }
+  },
+  "tags": []
+}

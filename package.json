@@ -6,10 +6,13 @@
   "private": true,
   "dependencies": {
     "@prisma/client": "^4.5.0",
-    "axios": "^1.0.0",
-    "tslib": "^2.3.0"
+    "commander": "^10.0.0",
+    "immer": "^9.0.21",
+    "tslib": "^2.3.0",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@commander-js/extra-typings": "^10.0.3",
     "@nrwl/esbuild": "15.9.2",
     "@nrwl/eslint-plugin-nx": "15.9.2",
     "@nrwl/jest": "15.9.2",
