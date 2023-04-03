@@ -26,7 +26,24 @@ export default class Harvester {
       const chatPart = await this.getChatPart(file);
       chat.messages.push(...chatPart.messages);
     }
-    return chat.messages.length;
+
+    this.fixDuplicateMessages(chat);
+    return chat;
+  }
+
+  /**
+   * mutates `chat`
+   */
+  fixDuplicateMessages(chat: z.infer<typeof schema>) {
+    const checked = new Set();
+    chat.messages.forEach((message, index, messages) => {
+      if (checked.has(message.timestamp_ms)) {
+        messages[index].timestamp_ms += 1;
+      } else {
+        checked.add(message.timestamp_ms);
+      }
+    });
+    return chat;
   }
 
   async getChatPart(file: MessageFile) {
