@@ -1,18 +1,8 @@
-import { getStash } from "@zipchat/database";
-
-const stash = getStash();
+import Harvester from "@zipchat/harvester";
 
 async function main() {
-  const chats = await stash.chat.findMany();
-  console.log(chats);
+  const harvester = new Harvester();
+  console.log(await harvester.harvest());
 }
 
-main()
-  .then(async () => {
-    await stash.$disconnect();
-  })
-  .catch(async (e) => {
-    console.error(e);
-    await stash.$disconnect();
-    process.exit(1);
-  });
+main();

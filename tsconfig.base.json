@@ -8,6 +8,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
+    "esModuleInterop": true,
     "target": "es2015",
     "module": "esnext",
     "lib": ["es2017", "dom"],
@@ -15,7 +16,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@zipchat/database": ["packages/database/src/index.ts"]
+      "@zipchat/database": ["packages/database/src/index.ts"],
+      "@zipchat/harvester": ["packages/harvester/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

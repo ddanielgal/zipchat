@@ -43,3 +43,6 @@ Thumbs.db
 .env.*
 !.env.template
 !.env.prisma.template
+
+# inputs
+data/
