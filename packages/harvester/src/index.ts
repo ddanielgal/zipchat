@@ -21,9 +21,18 @@ export default class Harvester {
   async harvest() {
     await this.collectMessageFiles();
     const [first, ...rest] = this.messageFiles;
+    const chat = await this.getChatPart(first);
+    for (const file of rest) {
+      const chatPart = await this.getChatPart(file);
+      chat.messages.push(...chatPart.messages);
+    }
+    return chat.messages.length;
+  }
+
+  async getChatPart(file: MessageFile) {
     const rawContent = await new StreamZip.async({
-      file: first.zipFilePath,
-    }).entryData(first.entryName);
+      file: file.zipFilePath,
+    }).entryData(file.entryName);
     const firstParsed = JSON.parse(rawContent.toString(), (_, value) => {
       if (typeof value !== "string") return value;
       return iconv.decode(iconv.encode(value, "latin1"), "utf-8");
