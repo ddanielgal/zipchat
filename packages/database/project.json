@@ -64,13 +64,13 @@
     "stash-create": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "podman run -d --name chat-db -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -e MYSQL_DATABASE=chat -p 3306:3306 -v chat:/var/lib/mysql docker.io/library/mysql:8"
+        "command": "podman run -it --name chat-db -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -e MYSQL_DATABASE=chat -p 3306:3306 -v chat:/var/lib/mysql docker.io/library/mysql:8"
       }
     },
     "stash-start": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "podman start chat-db"
+        "command": "podman start -ai chat-db"
       }
     },
     "stash-stop": {
