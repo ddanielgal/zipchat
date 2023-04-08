@@ -4,8 +4,8 @@ import { z } from "zod";
 const stash = getStash();
 
 async function main() {
-  const topSchema = z.array(z.object({ id: z.string().cuid() }).strict());
-  const top = topSchema.parse(
+  const topIdsSchema = z.array(z.object({ id: z.string().cuid() }).strict());
+  const topIds = topIdsSchema.parse(
     await stash.$queryRaw`
       SELECT id
       FROM Message
@@ -17,7 +17,35 @@ async function main() {
       ) r ON Message.id = r.messageId;
     `
   );
-  console.log(top)
+  const topMessages = await stash.message.findMany({
+    where: {
+      id: {
+        in: topIds.map((id) => id.id),
+      },
+    },
+    include: {
+      sender: true,
+      reactions: true,
+      photos: true,
+      videos: true,
+      gifs: true,
+      files: true,
+      audioFiles: true,
+      share: true,
+      sticker: true,
+      users: true,
+    },
+  });
+  const chat = await stash.chat.findFirst({
+    include: {
+      joinableMode: true,
+      image: true,
+      magicWords: true,
+      participants: true,
+    },
+  });
+  console.log(chat);
+  console.log(topMessages);
 }
 
 main()
