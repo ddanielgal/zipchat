@@ -2,8 +2,8 @@ import * as fs from "fs";
 import StreamZip from "node-stream-zip";
 import { z } from "zod";
 import iconv from "iconv-lite";
-import schema from "./schema";
 import { getStash } from "@zipchat/database";
+import schema from "./schema";
 
 type MessageFile = {
   zipFilePath: string;
@@ -199,5 +199,22 @@ export default class Harvester {
       await zip.close();
     }
     return this.messageFiles;
+  }
+
+  async getFile(uri: string): Promise<Buffer | null> {
+    let result = null;
+    for (const file of this.files) {
+      const filePath = `data/${file}`;
+      const zip = new StreamZip.async({ file: filePath });
+      if (!(await zip.entry(uri))){
+        continue;
+      }
+      const buffer = await zip.entryData(uri);
+      if (buffer) {
+        result = buffer;
+      }
+      await zip.close();
+    }
+    return result;
   }
 }
