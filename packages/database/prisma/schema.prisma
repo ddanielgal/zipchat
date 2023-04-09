@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model Participant {
@@ -21,6 +22,8 @@ model Photo {
   creationTimestamp Int
   Message           Message @relation(fields: [messageId], references: [id])
   messageId         String
+
+  @@index([messageId])
 }
 
 model Video {
@@ -29,6 +32,8 @@ model Video {
   creationTimestamp Int
   Message           Message @relation(fields: [messageId], references: [id])
   messageId         String
+
+  @@index([messageId])
 }
 
 model Gif {
@@ -36,6 +41,8 @@ model Gif {
   uri       String  @db.MediumText
   Message   Message @relation(fields: [messageId], references: [id])
   messageId String
+
+  @@index([messageId])
 }
 
 model File {
@@ -44,6 +51,8 @@ model File {
   creationTimestamp Int
   Message           Message @relation(fields: [messageId], references: [id])
   messageId         String
+
+  @@index([messageId])
 }
 
 model AudioFile {
@@ -52,6 +61,8 @@ model AudioFile {
   creationTimestamp Int
   Message           Message @relation(fields: [messageId], references: [id])
   messageId         String
+
+  @@index([messageId])
 }
 
 model Reaction {
@@ -61,6 +72,9 @@ model Reaction {
   actorName String
   Message   Message     @relation(fields: [messageId], references: [id])
   messageId String
+
+  @@index([messageId])
+  @@index([actorName])
 }
 
 model Share {
@@ -99,6 +113,7 @@ model Message {
   chatId       String
 
   @@unique([senderName, timestampMs])
+  @@index([chatId])
 }
 
 model MagicWord {
@@ -106,6 +121,8 @@ model MagicWord {
   word   String
   Chat   Chat   @relation(fields: [chatId], references: [id])
   chatId String
+
+  @@index([chatId])
 }
 
 model JoinableMode {

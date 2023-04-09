@@ -12,6 +12,7 @@ export { Prisma as Stash } from "@prisma/client";
 export function getLive() {
   return new PrismaClient({
     datasources: { db: { url: process.env.LIVE_DATABASE_URL } },
+    log: ["query", "info", "warn"],
   });
 }
 
