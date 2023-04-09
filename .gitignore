@@ -37,3 +37,12 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# environment
+.env
+.env.*
+!.env.template
+!.env.prisma.template
+
+# inputs
+data/
