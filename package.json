@@ -6,6 +6,7 @@
   "private": true,
   "dependencies": {
     "@prisma/client": "^4.5.0",
+    "@supabase/supabase-js": "^2.15.0",
     "commander": "^10.0.0",
     "iconv-lite": "^0.6.3",
     "immer": "^9.0.21",
