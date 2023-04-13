@@ -4,7 +4,7 @@ import { getLive, getStash } from "@zipchat/database";
 const stash = getStash();
 const live = getLive();
 
-async function main() {
+async function pick() {
   const topIdsSchema = z.array(z.object({ id: z.string().cuid() }).strict());
   const topIds = topIdsSchema.parse(
     await stash.$queryRaw`
@@ -168,7 +168,16 @@ async function main() {
   }
 }
 
-main()
+async function post() {
+  const messages = await live.message.findMany({ select: { id: true } });
+  for (const { id } of messages) {
+    await live.post.create({
+      data: { message: { connect: { id } }, isVisible: true },
+    });
+  }
+}
+
+post()
   .then(async () => {
     await stash.$disconnect();
     await live.$disconnect();
