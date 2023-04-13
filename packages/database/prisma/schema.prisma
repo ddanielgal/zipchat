@@ -111,6 +111,8 @@ model Message {
   users        Participant[] @relation("MessageUser")
   Chat         Chat          @relation(fields: [chatId], references: [id])
   chatId       String
+  Post         Post?
+  postId       String?
 
   @@unique([senderName, timestampMs])
   @@index([chatId])
@@ -151,4 +153,13 @@ model Chat {
   joinableModeId     String        @unique
   image              Image         @relation(fields: [imageId], references: [id])
   imageId            String        @unique
+}
+
+model Post {
+  id        String  @id @default(cuid())
+  message   Message @relation(fields: [messageId], references: [id])
+  messageId String  @unique
+  isVisible Boolean
+
+  @@index([messageId])
 }
