@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: "m2d-e2e",
+  displayName: "filebridge-e2e",
   preset: "../..//jest.preset.js",
   globals: {
     "ts-jest": {
@@ -13,5 +13,5 @@ export default {
     "^.+\\.[tj]s$": "ts-jest",
   },
   moduleFileExtensions: ["ts", "js", "html"],
-  coverageDirectory: "../..//coverage/m2d-e2e",
+  coverageDirectory: "../..//coverage/filebridge-e2e",
 };

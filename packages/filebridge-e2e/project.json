@@ -1,13 +1,13 @@
 {
-  "name": "m2d-e2e",
+  "name": "filebridge-e2e",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "implicitDependencies": ["m2d"],
+  "implicitDependencies": ["filebridge"],
   "targets": {
     "e2e": {
       "executor": "@nrwl/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{e2eProjectRoot}"],
       "options": {
-        "jestConfig": "packages/m2d-e2e/jest.config.ts",
+        "jestConfig": "packages/filebridge-e2e/jest.config.ts",
         "passWithNoTests": true
       }
     },
@@ -15,7 +15,7 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/m2d-e2e/**/*.{js,ts}"]
+        "lintFilePatterns": ["packages/filebridge-e2e/**/*.{js,ts}"]
       }
     }
   }
