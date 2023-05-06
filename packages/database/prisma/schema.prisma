@@ -116,6 +116,7 @@ model Message {
 
   @@unique([senderName, timestampMs])
   @@index([chatId])
+  @@index([timestampMs])
 }
 
 model MagicWord {
